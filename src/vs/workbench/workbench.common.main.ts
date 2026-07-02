@@ -263,8 +263,8 @@ import './contrib/bulkEdit/browser/preview/bulkEdit.contribution.js';
 import './contrib/inlineCompletions/browser/renameSymbolTrackerService.js';
 
 // Search
-import './contrib/search/browser/search.contribution.js';
-import './contrib/search/browser/searchView.js';
+// import './contrib/search/browser/search.contribution.js';
+// import './contrib/search/browser/searchView.js';
 
 // Search Editor
 import './contrib/searchEditor/browser/searchEditor.contribution.js';
@@ -276,17 +276,17 @@ import './contrib/sash/browser/sash.contribution.js';
 import './contrib/git/browser/git.contributions.js';
 
 // SCM
-import './contrib/scm/browser/scm.contribution.js';
-import './contrib/scm/browser/quickDiff.contribution.js';
-import './contrib/scm/browser/scm.service.contribution.js';
+// import './contrib/scm/browser/scm.contribution.js';
+// import './contrib/scm/browser/quickDiff.contribution.js';
+// import './contrib/scm/browser/scm.service.contribution.js';
 
 // Debug
-import './contrib/debug/browser/debug.contribution.js';
-import './contrib/debug/browser/debugEditorContribution.js';
-import './contrib/debug/browser/breakpointEditorContribution.js';
-import './contrib/debug/browser/callStackEditorContribution.js';
-import './contrib/debug/browser/repl.js';
-import './contrib/debug/browser/debugViewlet.js';
+// import './contrib/debug/browser/debug.contribution.js';
+// import './contrib/debug/browser/debugEditorContribution.js';
+// import './contrib/debug/browser/breakpointEditorContribution.js';
+// import './contrib/debug/browser/callStackEditorContribution.js';
+// import './contrib/debug/browser/repl.js';
+// import './contrib/debug/browser/debugViewlet.js';
 
 // Markers
 import './contrib/markers/browser/markers.contribution.js';
