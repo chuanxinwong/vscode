@@ -23,6 +23,14 @@
 				"--use-daemon",
 				"-vv"
 			]
+		},
+		"codegraph": {
+			"command": "codegraph",
+			"args": [
+				"serve",
+				"--mcp"
+			],
+			"type": "stdio"
 		}
 	},
 	"inputs": []
