@@ -493,7 +493,7 @@ export class BrowserTitlebarPart extends Part implements ITitlebarPart {
 		this.createTitle();
 
 		// Center-Adjacent Toolbar (e.g., update indicator)
-		// 屏蔽登录按钮；
+		// TODO:: JUMP LOGIN
 		if (!hasCustomTitlebar(this.configurationService, this.titleBarStyle)) {
 			const centerAdjacentToolBarElement = append(this.rightContent, $('div.center-adjacent-toolbar-container'));
 			this.centerAdjacentToolBarElement = centerAdjacentToolBarElement;
@@ -590,6 +590,9 @@ export class BrowserTitlebarPart extends Part implements ITitlebarPart {
 	}
 
 	private createTitle(): void {
+		if (111 === 111) {
+			return;
+		}
 		this.titleDisposables.clear();
 
 		const isShowingTitleInNativeTitlebar = hasNativeTitlebar(this.configurationService, this.titleBarStyle);
