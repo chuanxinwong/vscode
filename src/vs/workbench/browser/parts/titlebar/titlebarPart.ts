@@ -493,7 +493,8 @@ export class BrowserTitlebarPart extends Part implements ITitlebarPart {
 		this.createTitle();
 
 		// Center-Adjacent Toolbar (e.g., update indicator)
-		if (hasCustomTitlebar(this.configurationService, this.titleBarStyle)) {
+		// 屏蔽登录按钮；
+		if (!hasCustomTitlebar(this.configurationService, this.titleBarStyle)) {
 			const centerAdjacentToolBarElement = append(this.rightContent, $('div.center-adjacent-toolbar-container'));
 			this.centerAdjacentToolBarElement = centerAdjacentToolBarElement;
 			const centerAdjacentToolBar = this.centerAdjacentToolBarDisposable.add(this.instantiationService.createInstance(MenuWorkbenchToolBar, centerAdjacentToolBarElement, MenuId.TitleBarAdjacentCenter, {
