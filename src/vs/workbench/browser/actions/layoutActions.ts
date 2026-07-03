@@ -337,59 +337,60 @@ export class ToggleSidebarVisibilityAction extends Action2 {
 
 registerAction2(ToggleSidebarVisibilityAction);
 
-MenuRegistry.appendMenuItems([
-	{
-		id: MenuId.ViewContainerTitleContext,
-		item: {
-			group: '3_workbench_layout_move',
-			command: {
-				id: ToggleSidebarVisibilityAction.ID,
-				title: localize('compositePart.hideSideBarLabel', "Hide Primary Side Bar"),
-			},
-			when: ContextKeyExpr.and(SideBarVisibleContext, ContextKeyExpr.equals('viewContainerLocation', ViewContainerLocationToString(ViewContainerLocation.Sidebar))),
-			order: 2
+if (111 !== 111) {
+	MenuRegistry.appendMenuItems([
+		{
+			id: MenuId.ViewContainerTitleContext,
+			item: {
+				group: '3_workbench_layout_move',
+				command: {
+					id: ToggleSidebarVisibilityAction.ID,
+					title: localize('compositePart.hideSideBarLabel', "Hide Primary Side Bar"),
+				},
+				when: ContextKeyExpr.and(SideBarVisibleContext, ContextKeyExpr.equals('viewContainerLocation', ViewContainerLocationToString(ViewContainerLocation.Sidebar))),
+				order: 2
+			}
+		}, {
+			id: MenuId.LayoutControlMenu,
+			item: {
+				group: 'navigation',
+				command: {
+					id: ToggleSidebarVisibilityAction.ID,
+					title: localize('toggleSideBar', "Toggle Primary Side Bar"),
+					icon: panelLeftOffIcon,
+					toggled: { condition: SideBarVisibleContext, icon: panelLeftIcon }
+				},
+				when: ContextKeyExpr.and(
+					IsAuxiliaryWindowContext.negate(),
+					ContextKeyExpr.or(
+						ContextKeyExpr.equals('config.workbench.layoutControl.type', 'toggles'),
+						ContextKeyExpr.equals('config.workbench.layoutControl.type', 'both')),
+					ContextKeyExpr.equals('config.workbench.sideBar.location', 'left')
+				),
+				order: 0
+			}
+		}, {
+			id: MenuId.LayoutControlMenu,
+			item: {
+				group: 'navigation',
+				command: {
+					id: ToggleSidebarVisibilityAction.ID,
+					title: localize('toggleSideBar', "Toggle Primary Side Bar"),
+					icon: panelRightOffIcon,
+					toggled: { condition: SideBarVisibleContext, icon: panelRightIcon }
+				},
+				when: ContextKeyExpr.and(
+					IsAuxiliaryWindowContext.negate(),
+					ContextKeyExpr.or(
+						ContextKeyExpr.equals('config.workbench.layoutControl.type', 'toggles'),
+						ContextKeyExpr.equals('config.workbench.layoutControl.type', 'both')),
+					ContextKeyExpr.equals('config.workbench.sideBar.location', 'right')
+				),
+				order: 2
+			}
 		}
-	}, {
-		id: MenuId.LayoutControlMenu,
-		item: {
-			group: 'navigation',
-			command: {
-				id: ToggleSidebarVisibilityAction.ID,
-				title: localize('toggleSideBar', "Toggle Primary Side Bar"),
-				icon: panelLeftOffIcon,
-				toggled: { condition: SideBarVisibleContext, icon: panelLeftIcon }
-			},
-			when: ContextKeyExpr.and(
-				IsAuxiliaryWindowContext.negate(),
-				ContextKeyExpr.or(
-					ContextKeyExpr.equals('config.workbench.layoutControl.type', 'toggles'),
-					ContextKeyExpr.equals('config.workbench.layoutControl.type', 'both')),
-				ContextKeyExpr.equals('config.workbench.sideBar.location', 'left')
-			),
-			order: 0
-		}
-	}, {
-		id: MenuId.LayoutControlMenu,
-		item: {
-			group: 'navigation',
-			command: {
-				id: ToggleSidebarVisibilityAction.ID,
-				title: localize('toggleSideBar', "Toggle Primary Side Bar"),
-				icon: panelRightOffIcon,
-				toggled: { condition: SideBarVisibleContext, icon: panelRightIcon }
-			},
-			when: ContextKeyExpr.and(
-				IsAuxiliaryWindowContext.negate(),
-				ContextKeyExpr.or(
-					ContextKeyExpr.equals('config.workbench.layoutControl.type', 'toggles'),
-					ContextKeyExpr.equals('config.workbench.layoutControl.type', 'both')),
-				ContextKeyExpr.equals('config.workbench.sideBar.location', 'right')
-			),
-			order: 2
-		}
-	}
-]);
-
+	]);
+}
 // --- Toggle Statusbar Visibility
 
 export class ToggleStatusbarVisibilityAction extends Action2 {
@@ -1413,207 +1414,210 @@ const EditorActionsInTitleBar = ContextKeyExpr.or(
 	)
 )!;
 
-registerAction2(class CustomizeLayoutAction extends Action2 {
 
-	private _currentQuickPick?: IQuickPick<IQuickPickItem, { useSeparators: true }>;
+if (111 !== 111) {
+	registerAction2(class CustomizeLayoutAction extends Action2 {
 
-	constructor() {
-		super({
-			id: 'workbench.action.customizeLayout',
-			title: localize2('customizeLayout', "Customize Layout..."),
-			f1: true,
-			icon: configureLayoutIcon,
-			menu: [
-				{
-					id: MenuId.LayoutControlMenuSubmenu,
-					group: 'z_end',
-				},
-				{
-					id: MenuId.LayoutControlMenu,
-					when: ContextKeyExpr.and(
-						IsAuxiliaryWindowContext.toNegated(),
-						ContextKeyExpr.equals('config.workbench.layoutControl.type', 'both'),
-						EditorActionsInTitleBar.negate()
-					),
-					group: 'navigation'
-				},
-				{
-					id: MenuId.LayoutControlMenu,
-					when: ContextKeyExpr.and(
-						IsAuxiliaryWindowContext.toNegated(),
-						ContextKeyExpr.equals('config.workbench.layoutControl.type', 'both'),
-						EditorActionsInTitleBar
-					),
-					group: '1_layout'
-				}
-			]
-		});
-	}
+		private _currentQuickPick?: IQuickPick<IQuickPickItem, { useSeparators: true }>;
 
-	getItems(contextKeyService: IContextKeyService, keybindingService: IKeybindingService): QuickPickItem[] {
-		const toQuickPickItem = (item: CustomizeLayoutItem): IQuickPickItem => {
-			const toggled = item.active.evaluate(contextKeyService.getContext(null));
-			let label = item.useButtons ?
-				item.label :
-				item.label + (toggled && item.activeIcon ? ` $(${item.activeIcon.id})` : (!toggled && item.inactiveIcon ? ` $(${item.inactiveIcon.id})` : ''));
-			const ariaLabel =
-				item.label + (toggled && item.activeAriaLabel ? ` (${item.activeAriaLabel})` : (!toggled && item.inactiveAriaLabel ? ` (${item.inactiveAriaLabel})` : ''));
-
-			if (item.visualIcon) {
-				let icon = item.visualIcon;
-				if (isContextualLayoutVisualIcon(icon)) {
-					const useIconA = icon.whenA.evaluate(contextKeyService.getContext(null));
-					icon = useIconA ? icon.iconA : icon.iconB;
-				}
-
-				label = `$(${icon.id}) ${label}`;
-			}
-
-			const icon = toggled ? item.activeIcon : item.inactiveIcon;
-
-			return {
-				type: 'item',
-				id: item.id,
-				label,
-				ariaLabel,
-				keybinding: keybindingService.lookupKeybinding(item.id, contextKeyService),
-				buttons: !item.useButtons ? undefined : [
+		constructor() {
+			super({
+				id: 'workbench.action.customizeLayout',
+				title: localize2('customizeLayout', "Customize Layout..."),
+				f1: true,
+				icon: configureLayoutIcon,
+				menu: [
 					{
-						alwaysVisible: false,
-						tooltip: ariaLabel,
-						iconClass: icon ? ThemeIcon.asClassName(icon) : undefined
+						id: MenuId.LayoutControlMenuSubmenu,
+						group: 'z_end',
+					},
+					{
+						id: MenuId.LayoutControlMenu,
+						when: ContextKeyExpr.and(
+							IsAuxiliaryWindowContext.toNegated(),
+							ContextKeyExpr.equals('config.workbench.layoutControl.type', 'both'),
+							EditorActionsInTitleBar.negate()
+						),
+						group: 'navigation'
+					},
+					{
+						id: MenuId.LayoutControlMenu,
+						when: ContextKeyExpr.and(
+							IsAuxiliaryWindowContext.toNegated(),
+							ContextKeyExpr.equals('config.workbench.layoutControl.type', 'both'),
+							EditorActionsInTitleBar
+						),
+						group: '1_layout'
 					}
 				]
-			};
-		};
-		return [
-			{
-				type: 'separator',
-				label: localize('toggleVisibility', "Visibility")
-			},
-			...ToggleVisibilityActions.map(toQuickPickItem),
-			{
-				type: 'separator',
-				label: localize('sideBarPosition', "Primary Side Bar Position")
-			},
-			...MoveSideBarActions.map(toQuickPickItem),
-			{
-				type: 'separator',
-				label: localize('panelAlignment', "Panel Alignment")
-			},
-			...AlignPanelActions.map(toQuickPickItem),
-			{
-				type: 'separator',
-				label: localize('quickOpen', "Quick Input Position")
-			},
-			...QuickInputActions.map(toQuickPickItem),
-			{
-				type: 'separator',
-				label: localize('layoutModes', "Modes"),
-			},
-			...MiscLayoutOptions.map(toQuickPickItem),
-		];
-	}
-
-	run(accessor: ServicesAccessor): void {
-		if (this._currentQuickPick) {
-			this._currentQuickPick.hide();
-			return;
+			});
 		}
 
-		const configurationService = accessor.get(IConfigurationService);
-		const contextKeyService = accessor.get(IContextKeyService);
-		const commandService = accessor.get(ICommandService);
-		const quickInputService = accessor.get(IQuickInputService);
-		const keybindingService = accessor.get(IKeybindingService);
+		getItems(contextKeyService: IContextKeyService, keybindingService: IKeybindingService): QuickPickItem[] {
+			const toQuickPickItem = (item: CustomizeLayoutItem): IQuickPickItem => {
+				const toggled = item.active.evaluate(contextKeyService.getContext(null));
+				let label = item.useButtons ?
+					item.label :
+					item.label + (toggled && item.activeIcon ? ` $(${item.activeIcon.id})` : (!toggled && item.inactiveIcon ? ` $(${item.inactiveIcon.id})` : ''));
+				const ariaLabel =
+					item.label + (toggled && item.activeAriaLabel ? ` (${item.activeAriaLabel})` : (!toggled && item.inactiveAriaLabel ? ` (${item.inactiveAriaLabel})` : ''));
 
-		const disposables = new DisposableStore();
+				if (item.visualIcon) {
+					let icon = item.visualIcon;
+					if (isContextualLayoutVisualIcon(icon)) {
+						const useIconA = icon.whenA.evaluate(contextKeyService.getContext(null));
+						icon = useIconA ? icon.iconA : icon.iconB;
+					}
 
-		const quickPick = disposables.add(quickInputService.createQuickPick({ useSeparators: true }));
-
-		this._currentQuickPick = quickPick;
-		quickPick.items = this.getItems(contextKeyService, keybindingService);
-		quickPick.ignoreFocusOut = true;
-		quickPick.hideInput = true;
-		quickPick.title = localize('customizeLayoutQuickPickTitle', "Customize Layout");
-
-		const closeButton = {
-			alwaysVisible: true,
-			iconClass: ThemeIcon.asClassName(Codicon.close),
-			tooltip: localize('close', "Close")
-		};
-
-		const resetButton = {
-			alwaysVisible: true,
-			iconClass: ThemeIcon.asClassName(Codicon.discard),
-			tooltip: localize('restore defaults', "Restore Defaults")
-		};
-
-		quickPick.buttons = [
-			resetButton,
-			closeButton
-		];
-
-		let selectedItem: CustomizeLayoutItem | undefined = undefined;
-		disposables.add(contextKeyService.onDidChangeContext(changeEvent => {
-			if (changeEvent.affectsSome(LayoutContextKeySet)) {
-				quickPick.items = this.getItems(contextKeyService, keybindingService);
-				if (selectedItem) {
-					quickPick.activeItems = quickPick.items.filter(item => (item as CustomizeLayoutItem).id === selectedItem?.id) as IQuickPickItem[];
+					label = `$(${icon.id}) ${label}`;
 				}
 
-				setTimeout(() => quickInputService.focus(), 0);
-			}
-		}));
+				const icon = toggled ? item.activeIcon : item.inactiveIcon;
 
-		disposables.add(quickPick.onDidAccept(event => {
-			if (quickPick.selectedItems.length) {
-				selectedItem = quickPick.selectedItems[0] as CustomizeLayoutItem;
-				commandService.executeCommand(selectedItem.id);
-			}
-		}));
-
-		disposables.add(quickPick.onDidTriggerItemButton(event => {
-			if (event.item) {
-				selectedItem = event.item as CustomizeLayoutItem;
-				commandService.executeCommand(selectedItem.id);
-			}
-		}));
-
-		disposables.add(quickPick.onDidTriggerButton((button) => {
-			if (button === closeButton) {
-				quickPick.hide();
-			} else if (button === resetButton) {
-
-				const resetSetting = (id: string) => {
-					const config = configurationService.inspect(id);
-					configurationService.updateValue(id, config.defaultValue);
+				return {
+					type: 'item',
+					id: item.id,
+					label,
+					ariaLabel,
+					keybinding: keybindingService.lookupKeybinding(item.id, contextKeyService),
+					buttons: !item.useButtons ? undefined : [
+						{
+							alwaysVisible: false,
+							tooltip: ariaLabel,
+							iconClass: icon ? ThemeIcon.asClassName(icon) : undefined
+						}
+					]
 				};
+			};
+			return [
+				{
+					type: 'separator',
+					label: localize('toggleVisibility', "Visibility")
+				},
+				...ToggleVisibilityActions.map(toQuickPickItem),
+				{
+					type: 'separator',
+					label: localize('sideBarPosition', "Primary Side Bar Position")
+				},
+				...MoveSideBarActions.map(toQuickPickItem),
+				{
+					type: 'separator',
+					label: localize('panelAlignment', "Panel Alignment")
+				},
+				...AlignPanelActions.map(toQuickPickItem),
+				{
+					type: 'separator',
+					label: localize('quickOpen', "Quick Input Position")
+				},
+				...QuickInputActions.map(toQuickPickItem),
+				{
+					type: 'separator',
+					label: localize('layoutModes', "Modes"),
+				},
+				...MiscLayoutOptions.map(toQuickPickItem),
+			];
+		}
 
-				// Reset all layout options
-				resetSetting('workbench.activityBar.location');
-				resetSetting('workbench.sideBar.location');
-				resetSetting('workbench.statusBar.visible');
-				resetSetting('workbench.panel.defaultLocation');
-
-				if (!isMacintosh || !isNative) {
-					resetSetting('window.menuBarVisibility');
-				}
-
-				commandService.executeCommand('workbench.action.alignPanelCenter');
-				commandService.executeCommand('workbench.action.alignQuickInputTop');
+		run(accessor: ServicesAccessor): void {
+			if (this._currentQuickPick) {
+				this._currentQuickPick.hide();
+				return;
 			}
-		}));
 
-		disposables.add(quickPick.onDidHide(() => {
-			quickPick.dispose();
-		}));
+			const configurationService = accessor.get(IConfigurationService);
+			const contextKeyService = accessor.get(IContextKeyService);
+			const commandService = accessor.get(ICommandService);
+			const quickInputService = accessor.get(IQuickInputService);
+			const keybindingService = accessor.get(IKeybindingService);
 
-		disposables.add(quickPick.onDispose(() => {
-			this._currentQuickPick = undefined;
-			disposables.dispose();
-		}));
+			const disposables = new DisposableStore();
 
-		quickPick.show();
-	}
-});
+			const quickPick = disposables.add(quickInputService.createQuickPick({ useSeparators: true }));
+
+			this._currentQuickPick = quickPick;
+			quickPick.items = this.getItems(contextKeyService, keybindingService);
+			quickPick.ignoreFocusOut = true;
+			quickPick.hideInput = true;
+			quickPick.title = localize('customizeLayoutQuickPickTitle', "Customize Layout");
+
+			const closeButton = {
+				alwaysVisible: true,
+				iconClass: ThemeIcon.asClassName(Codicon.close),
+				tooltip: localize('close', "Close")
+			};
+
+			const resetButton = {
+				alwaysVisible: true,
+				iconClass: ThemeIcon.asClassName(Codicon.discard),
+				tooltip: localize('restore defaults', "Restore Defaults")
+			};
+
+			quickPick.buttons = [
+				resetButton,
+				closeButton
+			];
+
+			let selectedItem: CustomizeLayoutItem | undefined = undefined;
+			disposables.add(contextKeyService.onDidChangeContext(changeEvent => {
+				if (changeEvent.affectsSome(LayoutContextKeySet)) {
+					quickPick.items = this.getItems(contextKeyService, keybindingService);
+					if (selectedItem) {
+						quickPick.activeItems = quickPick.items.filter(item => (item as CustomizeLayoutItem).id === selectedItem?.id) as IQuickPickItem[];
+					}
+
+					setTimeout(() => quickInputService.focus(), 0);
+				}
+			}));
+
+			disposables.add(quickPick.onDidAccept(event => {
+				if (quickPick.selectedItems.length) {
+					selectedItem = quickPick.selectedItems[0] as CustomizeLayoutItem;
+					commandService.executeCommand(selectedItem.id);
+				}
+			}));
+
+			disposables.add(quickPick.onDidTriggerItemButton(event => {
+				if (event.item) {
+					selectedItem = event.item as CustomizeLayoutItem;
+					commandService.executeCommand(selectedItem.id);
+				}
+			}));
+
+			disposables.add(quickPick.onDidTriggerButton((button) => {
+				if (button === closeButton) {
+					quickPick.hide();
+				} else if (button === resetButton) {
+
+					const resetSetting = (id: string) => {
+						const config = configurationService.inspect(id);
+						configurationService.updateValue(id, config.defaultValue);
+					};
+
+					// Reset all layout options
+					resetSetting('workbench.activityBar.location');
+					resetSetting('workbench.sideBar.location');
+					resetSetting('workbench.statusBar.visible');
+					resetSetting('workbench.panel.defaultLocation');
+
+					if (!isMacintosh || !isNative) {
+						resetSetting('window.menuBarVisibility');
+					}
+
+					commandService.executeCommand('workbench.action.alignPanelCenter');
+					commandService.executeCommand('workbench.action.alignQuickInputTop');
+				}
+			}));
+
+			disposables.add(quickPick.onDidHide(() => {
+				quickPick.dispose();
+			}));
+
+			disposables.add(quickPick.onDispose(() => {
+				this._currentQuickPick = undefined;
+				disposables.dispose();
+			}));
+
+			quickPick.show();
+		}
+	});
+}
