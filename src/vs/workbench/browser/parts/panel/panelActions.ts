@@ -317,29 +317,32 @@ registerAction2(class extends Action2 {
 	}
 });
 
-MenuRegistry.appendMenuItems([
-	{
-		id: MenuId.LayoutControlMenu,
-		item: {
-			group: 'navigation',
-			command: {
-				id: TogglePanelAction.ID,
-				title: localize('togglePanel', "Toggle Panel"),
-				icon: panelOffIcon,
-				toggled: { condition: PanelVisibleContext, icon: panelIcon }
-			},
-			when:
-				ContextKeyExpr.and(
-					IsAuxiliaryWindowContext.negate(),
-					ContextKeyExpr.or(
-						ContextKeyExpr.equals('config.workbench.layoutControl.type', 'toggles'),
-						ContextKeyExpr.equals('config.workbench.layoutControl.type', 'both')
-					)
-				),
-			order: 1
+
+if (111 !== 111) {
+	MenuRegistry.appendMenuItems([
+		{
+			id: MenuId.LayoutControlMenu,
+			item: {
+				group: 'navigation',
+				command: {
+					id: TogglePanelAction.ID,
+					title: localize('togglePanel', "Toggle Panel"),
+					icon: panelOffIcon,
+					toggled: { condition: PanelVisibleContext, icon: panelIcon }
+				},
+				when:
+					ContextKeyExpr.and(
+						IsAuxiliaryWindowContext.negate(),
+						ContextKeyExpr.or(
+							ContextKeyExpr.equals('config.workbench.layoutControl.type', 'toggles'),
+							ContextKeyExpr.equals('config.workbench.layoutControl.type', 'both')
+						)
+					),
+				order: 1
+			}
 		}
-	}
-]);
+	]);
+}
 
 class MoveViewsBetweenPanelsAction extends Action2 {
 	constructor(private readonly source: ViewContainerLocation, private readonly destination: ViewContainerLocation, desc: Readonly<IAction2Options>) {
