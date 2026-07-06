@@ -6,3 +6,4 @@
 export const MyAppViewId = 'myApp.webviewView';
 export const MyAppViewContainerId = 'myApp';
 export const MyAppOpenCommandId = 'myApp.open';
+export const MyAppOpenSqlResCommandId = 'myApp.openSqlRes';

@@ -16,12 +16,12 @@ import { ViewPaneContainer } from '../../../browser/parts/views/viewPaneContaine
 import { IWebviewWorkbenchService } from '../../webviewPanel/browser/webviewWorkbenchService.js';
 import { ACTIVE_GROUP } from '../../../services/editor/common/editorService.js';
 import { MyAppViewPane } from './myAppViewPane.js';
-import { MyAppViewId, MyAppViewContainerId, MyAppOpenCommandId } from '../common/myApp.js';
+import { MyAppViewId, MyAppViewContainerId, MyAppOpenCommandId, MyAppOpenSqlResCommandId } from '../common/myApp.js';
 import { localize2 } from '../../../../nls.js';
 import { FileAccess } from '../../../../base/common/network.js';
 import { asWebviewUri, webviewGenericCspSource } from '../../webview/common/webview.js';
 
-// HTML content for the editor webview 闂?loaded from media/index.html at runtime
+// HTML content for the editor webview ?loaded from media/index.html at runtime
 /**
  * Load index.html from media/ and rewrite relative resource paths
  * to use webview-safe URIs so CSS, JS, images etc. can be loaded.
@@ -73,6 +73,39 @@ CommandsRegistry.registerCommand(MyAppOpenCommandId, async (accessor) => {
 			webviewInput.webview.postMessage({ type: 'logWritten', text: 'Timestamp written to D:\\log.log' });
 		}
 	});
+});
+
+CommandsRegistry.registerCommand(MyAppOpenSqlResCommandId, async (accessor) => {
+	const webviewWorkbenchService = accessor.get(IWebviewWorkbenchService);
+	const fileService = accessor.get(IFileService);
+
+	const mediaUri = FileAccess.asFileUri('vs/workbench/contrib/myApp/browser/media');
+	const htmlUri = FileAccess.asFileUri('vs/workbench/contrib/myApp/browser/media/sqlres.html');
+	let html: string;
+	try {
+		const result = await fileService.readFile(htmlUri);
+		const baseUrl = asWebviewUri(mediaUri).toString(true) + '/';
+		html = result.value.toString()
+			.replace(/(href|src)="(?!https?:\/\/)([^"]+)"/g, (_m, attr, path) => attr + '="' + baseUrl + path + '"')
+			.replace(/\{\{CSP_SOURCE\}\}/g, webviewGenericCspSource);
+	} catch {
+		html = '<!DOCTYPE html><html><body><h1>SQL Query Result</h1><p>Failed to load.</p></body></html>';
+	}
+
+	const webviewInput = webviewWorkbenchService.openWebview(
+		{
+			title: localize2('myApp.sqlRes.title', "SQL Query Result").value,
+			options: { enableFindWidget: true },
+			contentOptions: { allowScripts: true, localResourceRoots: [mediaUri] },
+			extension: undefined,
+		},
+		'myApp.sqlRes',
+		localize2('myApp.sqlRes.title', "SQL Query Result").value,
+		undefined,
+		{ group: ACTIVE_GROUP, preserveFocus: false },
+	);
+
+	webviewInput.webview.setHtml(html);
 });
 
 async function appendLog(fileService: IFileService): Promise<void> {

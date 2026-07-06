@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<!-- {{CSP_SOURCE}} is replaced at runtime. <base href> is injected before </head>. -->
+	<meta http-equiv="Content-Security-Policy"
+		content="default-src 'none'; script-src {{CSP_SOURCE}} 'unsafe-inline'; style-src {{CSP_SOURCE}} 'unsafe-inline'; img-src {{CSP_SOURCE}} data:; font-src {{CSP_SOURCE}};">
+	<title>MyApp</title>
+	<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+	<h1>sql result</h1>
+	<div>
+	</div>
+</body>
+</html>
